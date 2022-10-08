@@ -1,0 +1,13 @@
+BasedOnStyle: LLVM
+IndentWidth: 4
+AccessModifierOffset: -4
+AlignArrayOfStructures: Left
+AlignConsecutiveAssignments: true
+AlignConsecutiveMacros:
+  Enabled: true
+  AcrossEmptyLines: false
+  AcrossComments: true
+AlignTrailingComments: true
+AllowShortBlocksOnASingleLine: Always
+IncludeBlocks: Regroup
+ReflowComments: true
