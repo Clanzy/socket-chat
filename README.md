@@ -1,5 +1,9 @@
 # Socket chat
 
-Basic socket chat written with boost/asio
+## Description
 
-//TODO tests, UI, advanced functional
+Basic socket chat written with *boost/asio*
+
+## TODO
+
+*TODO tests, UI, advanced functional*
