@@ -5,7 +5,6 @@ include(CTest)
 enable_testing()
 set(CXX_STANDARD 20)
 
-add_subdirectory(lib)
 add_subdirectory(src)
 add_subdirectory(test)
 
