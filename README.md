@@ -2,8 +2,6 @@
 
 ## Description
 
-Basic socket chat written with *boost/asio*
+TCP socket chat written with *boost/asio*
 
-## TODO
-
-*TODO tests, UI, advanced functional*
+I would like to do advanced TUI for it with ncurses, but later has macro name conflict with boost library.
