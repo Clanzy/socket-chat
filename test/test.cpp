@@ -1,9 +1,22 @@
-#include <gtest/gtest.h>
+#define BOOST_TEST_MODULE SocketChatTests
+#include "message.hpp"
 
-// Demonstrate some basic assertions.
-TEST(HelloTest, BasicAssertions) {
-  // Expect two strings not to be equal.
-  EXPECT_STRNE("hello", "world");
-  // Expect equality.
-  EXPECT_EQ(7 * 6, 42);
+#include <boost/test/unit_test.hpp>
+
+BOOST_AUTO_TEST_CASE(message_test) {
+    {
+        chat::message msg("test str");
+        BOOST_CHECK(msg.length() == msg.deduce_length() && msg.length() == 8);
+    }
+    {
+        chat::message msg("");
+        BOOST_CHECK(msg.length() == msg.deduce_length() && msg.length() == 0);
+    }
+    {
+        chat::message msg(chat::message(std::string(1020, 'a')));
+        BOOST_CHECK(msg.length() == msg.deduce_length() &&
+                    msg.length() == 1020);
+    }
+    { BOOST_CHECK_THROW(chat::message(std::string(1021, 'a')), std::exception); }
+    { BOOST_CHECK_THROW(chat::message(std::string(10000, 'a')), std::exception); }
 }
