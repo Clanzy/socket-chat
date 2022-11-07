@@ -1,5 +1,5 @@
-add_executable(serverapp serverapp.cpp )
-add_executable(clientapp clientapp.cpp )
+add_executable(serverapp serverapp.cpp server.cpp)
+add_executable(clientapp clientapp.cpp client.cpp)
 
 set(CXX_STANDARD 20)
 
