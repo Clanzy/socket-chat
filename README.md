@@ -10,3 +10,5 @@ cd build
 cmake ..
 make
 ```
+## TODO
+TODO make GUI with Python
