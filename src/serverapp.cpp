@@ -5,7 +5,6 @@
 #include <list>
 
 int main(int argc, char *argv[]) {
-
     try {
         if (argc < 2) {
             std::cout << "Usage: chat_server <port> [<port> ...]" << '\n';

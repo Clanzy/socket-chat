@@ -2,7 +2,7 @@
 
 ## Description
 
-TCP socket chat (server & client) written with *boost/asio*
+TCP socket chat (server & client) written with *boost/asio* and *ncurses*
 
 ```
 mkdir build
@@ -10,6 +10,3 @@ cd build
 cmake ..
 make
 ```
-## TODO
-TODO make GUI with Python.
-

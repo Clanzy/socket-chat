@@ -14,14 +14,9 @@ int main(int argc, char *argv[]) {
         tcp::resolver res(io);
         auto endps = res.resolve(argv[1], argv[2]);
         chat::chat_client c(io, endps);
-        std::thread t([&]() { io.run(); });
-        std::string line;
-        while (std::getline(std::cin, line, '\n')) {
-            chat::message m(line);
-            c.do_send(m);
-        }
+        // block by ncurses
         c.close();
-        t.join();
+        
     } catch (std::exception &e) { std::cerr << e.what() << '\n'; }
 
     return 0;
