@@ -12,7 +12,7 @@ public:
     /*first 4 bytes encode length from 0 to 1020*/
     static constexpr size_t length_bytes = 4;
     /*then goes 1020 bytes that contain the message*/
-    static constexpr size_t message_bytes = 1020;
+    static constexpr size_t message_bytes = 1019;
 
     static constexpr size_t full_length = length_bytes + message_bytes;
 

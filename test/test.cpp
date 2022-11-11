@@ -13,10 +13,20 @@ BOOST_AUTO_TEST_CASE(message_test) {
         BOOST_CHECK(msg.length() == msg.deduce_length() && msg.length() == 0);
     }
     {
-        chat::message msg(chat::message(std::string(1020, 'a')));
+        chat::message msg(chat::message(std::string(1019, 'a')));
         BOOST_CHECK(msg.length() == msg.deduce_length() &&
-                    msg.length() == 1020);
+                    msg.length() == 1019);
     }
-    { BOOST_CHECK_THROW(chat::message(std::string(1021, 'a')), std::exception); }
-    { BOOST_CHECK_THROW(chat::message(std::string(10000, 'a')), std::exception); }
+    {
+        BOOST_CHECK_THROW(chat::message(std::string(1020, 'a')),
+                          std::exception);
+    }
+    {
+        BOOST_CHECK_THROW(chat::message(std::string(1021, 'a')),
+                          std::exception);
+    }
+    {
+        BOOST_CHECK_THROW(chat::message(std::string(10000, 'a')),
+                          std::exception);
+    }
 }
