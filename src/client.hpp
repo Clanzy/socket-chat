@@ -7,55 +7,52 @@
 #include <iostream>
 #include <string>
 
+namespace chat {
+
 using boost::asio::ip::tcp;
 namespace ba = boost::asio;
 
-namespace chat {
-
-class chat_client {
-private:
-    UI ui;
+class client_socket {
+protected:
     ba::io_context &io_;
     tcp::socket socket_;
-    /*these messages are stored locally so they are not deallocated during async
-     * operations*/
-    message read_message;
-    message write_message;
 
-    std::thread t1;
+    message read_message_;
+    message write_message_;
+
+    client_socket(ba::io_context &io, tcp::resolver::results_type &endpoints,
+                  std::function<void(const char *)> fctn_print)
+        : io_(io), socket_(io) {
+        do_connect(endpoints, fctn_print);
+    }
+
+    /*connect to the server and specify which function will print messages*/
+    void do_connect(tcp::resolver::results_type &endpoints,
+                    std::function<void(const char *)> fctn_print);
+    /*read *from* the server over a socket AND print it using fctn_print*/
+    void do_read(std::function<void(const char *)> fctn_print);
+    /*write *to* the server over a socket*/
+    void do_write(message &message);
+
+    virtual ~client_socket() {
+        ba::post([&]() { socket_.close(); });
+    }
+};
+
+class chat_client : private client_socket {
+private:
+    UI ui;
+
+    std::thread io_thread;
 
 public:
-    chat_client(ba::io_context &io, tcp::resolver::results_type &endpoints)
-        : io_(io), socket_(io) {
-        do_connect(endpoints);
-        t1 = std::thread([&]() { io_.run(); });
-        while (true) {
-            char *m = ui.get_input();
-            // TODO implement custom char* ctor instead of std::string default
-            // ctor (it makes two deep copies instead of one)
-            message msg(m);
-            do_send(msg);
-        }
-    }
+    /* allocate one thread for reading and writing messages from server. At this
+     * time, the main thread is used for reading user input and sending it to
+     * the server
+     */
+    chat_client(ba::io_context &io, tcp::resolver::results_type &endpoints);
 
-    void do_send(message &message) {
-        write_message = message;
-        do_write();
-    }
-
-    void close() {
-        ba::post([&]() { socket_.close(); });
-        t1.join();
-    }
-
-private:
-    void do_connect(tcp::resolver::results_type &endpoints);
-
-    void do_read();
-
-    void do_write();
-
-    
+    virtual ~chat_client() override { io_thread.join(); }
 };
 
 } // namespace chat

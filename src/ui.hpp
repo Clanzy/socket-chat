@@ -23,7 +23,7 @@ class OutputWindow : public BorderedWindow {
 public:
     OutputWindow(int height, int width, int starty, int startx);
 
-    void write(char *msg);
+    void write(const char *msg);
 };
 
 class InputWindow : public BorderedWindow {
@@ -54,7 +54,7 @@ private:
 public:
     UI();
     char *get_input();
-    void do_write(char *msg);
+    void do_write(const char *msg);
 };
 
 } // namespace chat

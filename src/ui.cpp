@@ -24,7 +24,7 @@ chat::OutputWindow::OutputWindow(int height, int width, int starty, int startx)
     scrollok((WINDOW *)window_, TRUE);
 }
 
-void chat::OutputWindow::write(char *msg) {
+void chat::OutputWindow::write(const char *msg) {
     wattron((WINDOW *)window_, COLOR_PAIR(1));
     wprintw((WINDOW *)window_, "%s", "Clanzy: ");
     wattroff((WINDOW *)window_, COLOR_PAIR(1));
@@ -68,7 +68,7 @@ chat::UI::UI()
       input_(divisor, COLS, LINES - divisor, 0) {}
 
 char *chat::UI::get_input() { return input_.read(); }
-void chat::UI::do_write(char *msg) {
+void chat::UI::do_write(const char *msg) {
     output_.write(msg);
     input_.move_to_start();
 }
