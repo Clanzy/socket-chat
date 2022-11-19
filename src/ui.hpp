@@ -1,12 +1,12 @@
 #pragma once
 
-#include <boost/asio.hpp>
-#include <cstring>
-#include <stdexcept>
+#include "request.hpp"
 
+#include <span>
 namespace chat {
 
-constexpr int msg_size = 1020;
+constexpr int request_length = request().length();
+static constexpr int divisor = 6;
 
 class BorderedWindow {
 protected:
@@ -20,22 +20,37 @@ public:
 };
 
 class OutputWindow : public BorderedWindow {
+private:
+    int height_;
+    int width_;
+    static constexpr int max_messages_ = 100;
+    int curr_position_                 = -height_;
+
 public:
     OutputWindow(int height, int width, int starty, int startx);
 
-    void write(const char *msg);
+    void write(std::span<const char> username, std::span<const char> message, int color);
+
+    void do_scroll();
 };
 
 class InputWindow : public BorderedWindow {
 private:
-    char msg_[msg_size];
+    char msg_[request_length];
 
 public:
     InputWindow(int height, int width, int starty, int startx);
 
     void move_to_start();
 
-    char *read();
+    void read(std::span<char> str);
+};
+
+class UsernameDialog : public BorderedWindow {
+public:
+    UsernameDialog();
+
+    void get_input(std::span<char> str);
 };
 
 class Curses {
@@ -46,15 +61,18 @@ public:
 
 class UI {
 private:
-    static constexpr int divisor = 5;
     Curses curses_;
     OutputWindow output_;
     InputWindow input_;
 
+    std::string username_;
+
 public:
     UI();
-    char *get_input();
-    void do_write(const char *msg);
+
+    request ask_username();
+    request ask_message();
+    void display_message(const request &msg);
 };
 
 } // namespace chat
